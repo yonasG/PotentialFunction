@@ -1,6 +1,5 @@
 function [ pot ] = potential(t,C,l)
-%UNTITLED4 Summary of this function goes here
-%   Detailed explanation goes here
+% Given Vk it constructs V(r)= 1/r + sum(Vk * P(cos(t)).
 %     [n,m] = size(t);
 %     fprintf('\n Size of t = %.2f by %.2f ', n, m)
 %     fprintf('\nInside potential t = %.4f ', t)

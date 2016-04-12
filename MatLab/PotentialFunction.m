@@ -23,7 +23,7 @@ format long
 n = 0;              % Landau level
 Q = 6.5;            % monopole strength
 l = Q+n;            % angular monentum
-kappa =1;
+kappa=1;
 
 % Calls the function VCoul to caclculate the Coulomb pseudopotential V(L,Q)
 Vc = zeros(2*l+1,1);
@@ -46,6 +46,7 @@ Vnm = zeros(2*l+1,1);
 for L=1:2*l+1;
     Vnm(L) = Vnm1(L) + kappa.*dVnm1(L) - Vc(L);
 end 
+display(Vnm)
 
 % **********************************************************************
 % To check if the Legendre coefficients are being calculated correctly
@@ -115,17 +116,52 @@ fprintf('Check 2 = %5.10E \n',check2)
 fprintf('Check 3 = %5.10E \n',check3)
 fprintf('The value of |b-Ax|/|b| is: %5.10E \n', check4)
 
+
+% C = [3.428269425656438;
+%    2.230787865365076;
+%    0.784111830735872;
+%    0.136006548018487;
+%    0.018996506538296;
+%   -0.000827332978129;
+%    0.001031331467866;
+%    0.000049015670725;
+%    0.000406417183675;
+%    0.000395488035722;
+%    0.000501757729597;
+%    0.000644681334506;
+%    0.000937595416990;
+%    0.002125814184722];
+
+%C = [1;1;1;1;1;1;1;1;1;1;1;1;1];
+   
+   
 % **********************************************************************
-% Test the function 
-for k=1:2*l+1
-     F=@potential;
-     %fprintf('\ninside l = %.3f ', l)
-     Pcoeff = (k+0.5).*integral(@(t) sin(t).*legendreP(k,cos(t)).*F(t,C,l),0,pi);
-     fprintf('\nThe %.2f th Legendre coefficeints is: %5.10f \n',k, Pcoeff)
+% Test: this part checks if the pseudopotentials of the output potential
+% function match the original pseudopotentials
+
+% Finds the legendre coefficients of the new potential function
+% for k=1:2*l+1
+%      F=@potential;
+%      Pcoeff = (k+0.5).*integral(@(t) sin(t).*legendreP(k,cos(t)).*F(t,C,l),0,pi);
+%      %fprintf('\nThe %.2f th Legendre coefficeints is: %5.10f \n',k, Pcoeff)
+% end
+
+% Given the legendre coefficeints finds the pseudopotential VL
+VL = zeros(2*l+1,1);
+for j=1:2*l+1
+    VLi = zeros(2*l+1,1);
+    for k=1:2*l
+        %fprintf('\nMade it in k loop, %.2f \n', k)
+        VLi(k) = Vm(Q,n,j-1,k-1,C(k));
+        %fprintf('VL(k) = %.15f \n', VLi(k))
+    end
+    VL(j) = sum(VLi); %/sqrt(Q);
 end
 
+display(VL)
+
 % **********************************************************************
-% plot the function V(r) = 1/r + c_i f_i(r) in the range 0 < x < pi
+% plot the function V(r) = 1/r + c_i f_i(r) in the range 0<x<pi
 r = @distance;
 x = 0:.00314149:2*pi;
 [p,q] = size(x);
