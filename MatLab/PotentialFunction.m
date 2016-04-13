@@ -93,7 +93,9 @@ dV = dV - 0.001*eye(2*l+1);
 %     C(k,:) = u(k).*temp(k).*1./s(i);
 % end
 
-C = vT*s*u.'*Vnm;
+%C = vT*s*u.'*Vnm;
+
+C = vT*((u'*Vnm)./diag(s));
 
 %C= vT*((u'*Vnm)./diag(s));
 
@@ -117,23 +119,6 @@ fprintf('Check 3 = %5.10E \n',check3)
 fprintf('The value of |b-Ax|/|b| is: %5.10E \n', check4)
 
 
-% C = [3.428269425656438;
-%    2.230787865365076;
-%    0.784111830735872;
-%    0.136006548018487;
-%    0.018996506538296;
-%   -0.000827332978129;
-%    0.001031331467866;
-%    0.000049015670725;
-%    0.000406417183675;
-%    0.000395488035722;
-%    0.000501757729597;
-%    0.000644681334506;
-%    0.000937595416990;
-%    0.002125814184722];
-
-%C = [1;1;1;1;1;1;1;1;1;1;1;1;1];
-   
    
 % **********************************************************************
 % Test: this part checks if the pseudopotentials of the output potential
@@ -181,7 +166,7 @@ figure(1)
 plot(x, Coulomb, 'b', x, Vr, 'r-.', 'LineWidth', 2)
 
 % Set the axis limits
-%axis([0 pi -10 30])
+axis([0 pi -10 30])
 
 % Add title and axis labels
 xlabel('Chord distance r')
